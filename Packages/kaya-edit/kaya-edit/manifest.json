@@ -1,0 +1,11 @@
+{
+  "name": "kaya-edit",
+  "displayName": "Kaya Text Editor",
+  "version": "1.0.0",
+  "author": "Kaya Community",
+  "description": "A small full-screen terminal editor for UTF-8 text files.",
+  "runtime": "python",
+  "entry": "main.py",
+  "category": "development",
+  "permissions": ["filesystem.read", "filesystem.write"]
+}

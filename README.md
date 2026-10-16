@@ -23,6 +23,8 @@ archive must have `manifest.json` and the manifest's entry file at its root.
 - `kaya-netdiag` - interface, route, DNS, bounded ping, and one TCP port check.
 - `kaya-subnet` - IPv4/IPv6 CIDR and subnet calculator.
 - `small-creatures` - exposes the host's existing Ubuntu `apt` command on PATH.
+- `kaya-edit` - full-screen terminal text editor for UTF-8 files.
+- `kaya-browser` - launches an installed Chrome, Chromium, or Firefox browser.
 
 Install a package with `kaya --install <name>`. Kaya adds a command named after
 the package to `~/.local/bin`, so it can be run directly, for example
@@ -33,6 +35,9 @@ the package to `~/.local/bin`, so it can be run directly, for example
 `~/.local/bin`; it does not install or replace apt and does not remove Kaya.
 `kaya-netdiag` reuses the host's `ping` command when present; system utilities
 are not bundled as duplicate Kaya packages.
+`kaya-edit` edits files on the Linux host where Kaya runs. `kaya-browser`
+launches a browser already installed on that host; browser binaries are not
+bundled in the Kaya repository.
 
 Shell and Python packages run on the Linux host where Kaya is installed; they
 do not run inside the freestanding Blackbit kernel. `kaya-serve` binds to

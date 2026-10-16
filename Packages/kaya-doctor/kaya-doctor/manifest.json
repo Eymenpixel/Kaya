@@ -1,0 +1,11 @@
+{
+  "name": "kaya-doctor",
+  "displayName": "Kaya Doctor",
+  "version": "1.0.0",
+  "author": "Kaya Community",
+  "description": "Check common command-line tools used by Kaya packages.",
+  "runtime": "sh",
+  "entry": "main.sh",
+  "category": "system",
+  "permissions": []
+}

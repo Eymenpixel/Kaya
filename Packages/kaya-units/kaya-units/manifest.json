@@ -1,0 +1,11 @@
+{
+  "name": "kaya-units",
+  "displayName": "Kaya Unit Converter",
+  "version": "1.0.0",
+  "author": "Kaya Community",
+  "description": "Convert common length, mass, and temperature units.",
+  "runtime": "python",
+  "entry": "main.py",
+  "category": "utility",
+  "permissions": []
+}

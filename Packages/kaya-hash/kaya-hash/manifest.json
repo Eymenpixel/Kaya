@@ -1,0 +1,11 @@
+{
+  "name": "kaya-hash",
+  "displayName": "Kaya File Hash",
+  "version": "1.0.0",
+  "author": "Kaya Community",
+  "description": "Calculate cryptographic hashes for files.",
+  "runtime": "python",
+  "entry": "main.py",
+  "category": "security",
+  "permissions": ["filesystem.read"]
+}

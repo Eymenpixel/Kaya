@@ -1,0 +1,11 @@
+{
+  "name": "kaya-json",
+  "displayName": "Kaya JSON Tool",
+  "version": "1.0.0",
+  "author": "Kaya Community",
+  "description": "Validate and format JSON from a file or standard input.",
+  "runtime": "python",
+  "entry": "main.py",
+  "category": "development",
+  "permissions": ["filesystem.read"]
+}

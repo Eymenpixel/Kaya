@@ -1,0 +1,11 @@
+{
+  "name": "kaya-passgen",
+  "displayName": "Kaya Password Generator",
+  "version": "1.0.0",
+  "author": "Kaya Community",
+  "description": "Generate random passwords locally with Python secrets.",
+  "runtime": "python",
+  "entry": "main.py",
+  "category": "security",
+  "permissions": []
+}

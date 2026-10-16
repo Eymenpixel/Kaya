@@ -1,0 +1,11 @@
+{
+  "name": "kaya-calc",
+  "displayName": "Kaya Calculator",
+  "version": "1.0.0",
+  "author": "Kaya Community",
+  "description": "Safe arithmetic calculator with an interactive prompt.",
+  "runtime": "python",
+  "entry": "main.py",
+  "category": "utility",
+  "permissions": []
+}

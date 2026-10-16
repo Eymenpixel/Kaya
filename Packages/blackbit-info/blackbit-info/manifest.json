@@ -1,0 +1,11 @@
+{
+  "name": "blackbit-info",
+  "displayName": "Blackbit System Info",
+  "version": "1.0.0",
+  "author": "Kaya Community",
+  "description": "Show a compact summary of the host system.",
+  "runtime": "sh",
+  "entry": "main.sh",
+  "category": "system",
+  "permissions": []
+}

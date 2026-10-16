@@ -1,0 +1,11 @@
+{
+  "name": "netcheck",
+  "displayName": "Kaya Network Check",
+  "version": "1.0.0",
+  "author": "Kaya Community",
+  "description": "Check whether the GitHub API can be reached with curl.",
+  "runtime": "sh",
+  "entry": "main.sh",
+  "category": "network",
+  "permissions": ["network"]
+}

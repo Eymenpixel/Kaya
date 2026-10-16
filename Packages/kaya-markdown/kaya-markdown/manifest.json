@@ -1,0 +1,11 @@
+{
+  "name": "kaya-markdown",
+  "displayName": "Kaya Markdown Reader",
+  "version": "1.0.0",
+  "author": "Kaya Community",
+  "description": "A dependency-free terminal Markdown reader.",
+  "runtime": "python",
+  "entry": "main.py",
+  "category": "utility",
+  "permissions": ["filesystem.read"]
+}

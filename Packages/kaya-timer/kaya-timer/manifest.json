@@ -1,0 +1,11 @@
+{
+  "name": "kaya-timer",
+  "displayName": "Kaya Timer",
+  "version": "1.0.0",
+  "author": "Kaya Community",
+  "description": "A simple countdown timer with optional repeat count.",
+  "runtime": "python",
+  "entry": "main.py",
+  "category": "productivity",
+  "permissions": []
+}

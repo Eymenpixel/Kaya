@@ -20,11 +20,19 @@ archive must have `manifest.json` and the manifest's entry file at its root.
 - `kaya-markdown` - terminal Markdown reader.
 - `kaya-calendar` - monthly calendar.
 - `clock` — existing Kaya clock/widget package.
+- `kaya-netdiag` - interface, route, DNS, bounded ping, and one TCP port check.
+- `kaya-subnet` - IPv4/IPv6 CIDR and subnet calculator.
+- `small-creatures` - exposes the host's existing Ubuntu `apt` command on PATH.
 
 Install a package with `kaya --install <name>`. Kaya adds a command named after
 the package to `~/.local/bin`, so it can be run directly, for example
 `kaya-calc '12 * 4'`. Existing installations can be linked with
 `kaya link --all`. The default package root is `~/.local/share/kaya`.
+
+`small-creatures --add APT` links the existing Ubuntu `apt` executable into
+`~/.local/bin`; it does not install or replace apt and does not remove Kaya.
+`kaya-netdiag` reuses the host's `ping` command when present; system utilities
+are not bundled as duplicate Kaya packages.
 
 Shell and Python packages run on the Linux host where Kaya is installed; they
 do not run inside the freestanding Blackbit kernel. `kaya-serve` binds to

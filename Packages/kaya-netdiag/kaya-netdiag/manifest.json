@@ -1,0 +1,11 @@
+{
+  "name": "kaya-netdiag",
+  "displayName": "Kaya Network Diagnostics",
+  "version": "1.0.0",
+  "author": "Kaya Community",
+  "description": "Inspect network configuration, resolve DNS, ping one host, and check one TCP port.",
+  "runtime": "python3",
+  "entry": "main.py",
+  "category": "network",
+  "permissions": ["network", "filesystem.read"]
+}

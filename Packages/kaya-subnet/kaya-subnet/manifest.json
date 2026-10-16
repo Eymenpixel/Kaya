@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "author": "Kaya Community",
   "description": "Calculate IPv4 and IPv6 network ranges from CIDR notation.",
-  "runtime": "python3",
+  "runtime": "python",
   "entry": "main.py",
   "category": "network",
   "permissions": []

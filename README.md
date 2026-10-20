@@ -1,44 +1,80 @@
-# Kaya packages
+# Kaya
 
-This repository contains Kaya packages under `Packages/` and Kaya plugins under
-`Plugins/`. Each package folder should contain one `.kay` tar archive. That
-archive must have `manifest.json` and the manifest's entry file at its root.
+Kaya is the package manager and application layer for Blackbit. This repository
+holds the Kaya core, packages, plugins, and the contracts that let Blackbit
+select and run the right package build for its configured language runtime.
 
-## Packages
+## Repository layout
 
-- `blackbit-info` — read-only host OS and uptime summary.
-- `kaya-doctor` — read-only check for `curl`, `tar`, and `python3`.
-- `netcheck` — makes one read-only request to the GitHub API using `curl`.
-- `kaya-calc` - arithmetic-only calculator (no expression execution).
-- `kaya-passgen` - local cryptographic password generator.
-- `kaya-json` - JSON validation and formatting.
-- `kaya-hash` - SHA-256, SHA-512, and BLAKE2b file checksums.
-- `kaya-todo` - persistent per-app task list.
-- `kaya-units` - length, mass, and temperature conversion.
-- `kaya-serve` - local web server, bound to localhost by default.
-- `kaya-timer` - countdown timer.
-- `kaya-markdown` - terminal Markdown reader.
-- `kaya-calendar` - monthly calendar.
-- `clock` — existing Kaya clock/widget package.
-- `kaya-netdiag` - interface, route, DNS, bounded ping, and one TCP port check.
-- `kaya-subnet` - IPv4/IPv6 CIDR and subnet calculator.
-- `small-creatures` - exposes the host's existing Ubuntu `apt` command on PATH.
-- `kaya-edit` - full-screen terminal text editor for UTF-8 files.
-- `kaya-browser` - launches an installed Chrome, Chromium, or Firefox browser.
+```text
+Kaya/                  Kaya core and package tooling
+Packages/<package>/    One distributable .kay archive per package
+Plugins/<plugin>/      One distributable .kyp archive per plugin
+docs/                  Runtime, package, and security contracts
+```
 
-Install a package with `kaya --install <name>`. Kaya adds a command named after
-the package to `~/.local/bin`, so it can be run directly, for example
-`kaya-calc '12 * 4'`. Existing installations can be linked with
-`kaya link --all`. The default package root is `~/.local/share/kaya`.
+Each `.kay` archive contains `manifest.json` and its declared build entries.
+Package source and its build instructions stay beside the archive so
+maintainers can reproduce it. The v2 package schema supports several language
+and runtime builds for one package. A `.kyp` archive contains `plugin.json`, a
+runner entry point, and any plugin support files.
 
-`small-creatures --add APT` links the existing Ubuntu `apt` executable into
-`~/.local/bin`; it does not install or replace apt and does not remove Kaya.
-`kaya-netdiag` reuses the host's `ping` command when present; system utilities
-are not bundled as duplicate Kaya packages.
-`kaya-edit` edits files on the Linux host where Kaya runs. `kaya-browser`
-launches a browser already installed on that host; browser binaries are not
-bundled in the Kaya repository.
+## Blackbit package paths
 
-Shell and Python packages run on the Linux host where Kaya is installed; they
-do not run inside the freestanding Blackbit kernel. `kaya-serve` binds to
-localhost unless the user explicitly requests a network-facing address.
+Kaya resolves all paths from its configured data root, rather than assuming a
+Linux home directory:
+
+| Purpose | Path relative to Kaya data root |
+| --- | --- |
+| Installed package payload | `apps/<package-id>/` |
+| Package writable data | `data/<package-id>/` |
+| Installed plugin payload | `plugins/<plugin-id>/` |
+| Download and index cache | `cache/` |
+| Private runtime profile | `private/setup.json` |
+
+`private/setup.json` belongs to Kaya core. It stores the selected language and
+runtime version for each installed package. Package processes must never receive
+the file path, a copy of its contents, or a capability to open it. Blackbit must
+enforce that boundary in its process/filesystem capabilities; file mode bits
+alone are not a security boundary between programs running as the same user.
+Packages receive only their own payload and explicitly granted writable data.
+
+The setup/runtime contract and current implementation limits are documented in
+[docs/architecture.md](docs/architecture.md). Package and private setup profile
+schemas are in `Kaya/schemas/`.
+
+## Blackbit command surface
+
+Packages may use the Blackbit command API for file and folder operations,
+system/process inspection, networking, user and disk management, and `forge`
+package operations. Each package must declare the commands and capabilities it
+needs. Destructive operations such as `wipe`, `formatdisk`, `erase`, and user or
+network administration require explicit user confirmation and must not be
+silently run during installation.
+
+## Packages and plugins
+
+Packages are versioned applications. Plugins provide language/runtime adapters
+or other narrowly scoped integration points. Package manifests declare
+language and runtime versions, entry points, and dependencies. Kaya records the
+selected build in the private setup profile; native Blackbit runtime discovery
+and compatible-build prompting remain part of the kernel adapter work.
+
+The planned first-party packages are `small-creatures` (terminal themes),
+`agent-switcher` (platform-supported package manager adapters), and `nexus`
+(virtual machines). Their current specifications are in
+[`Packages/README.md`](Packages/README.md); executable Blackbit packages need
+the native ABI/runtime adapter first.
+
+## Building Kaya
+
+The current C source has a POSIX development backend for local development. The
+Blackbit backend must use Blackbit's native command/process and storage APIs;
+POSIX host tools are not treated as Blackbit kernel facilities.
+
+```sh
+make -C Kaya
+```
+
+See [docs/architecture.md](docs/architecture.md) for the package/runtime path
+contract and platform boundary.

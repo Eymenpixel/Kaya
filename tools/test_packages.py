@@ -36,10 +36,34 @@ def main() -> None:
                 names = set(tar.getnames())
                 if "manifest.json" not in names or entry not in names:
                     raise SystemExit(f"{manifest['name']}: incomplete .kay archive")
+                if not set(manifest.get("supportFiles", [])).issubset(names):
+                    raise SystemExit(f"{manifest['name']}: support file missing from .kay archive")
                 archived_manifest = json.load(tar.extractfile("manifest.json"))
                 if archived_manifest["name"] != manifest["name"]:
                     raise SystemExit(f"{manifest['name']}: archive manifest mismatch")
             packages.append(manifest["name"])
+        # Exercise representative catalog behavior beyond --help.
+        def output(package: str, *args: str, stdin: str = "") -> str:
+            result = subprocess.run([str(out / package), *args], input=stdin,
+                                    text=True, check=True, stdout=subprocess.PIPE)
+            return result.stdout.strip()
+        checks = {
+            ("text-upper", "hello"): "HELLO",
+            ("base64-encode", "hello"): "aGVsbG8=",
+            ("base64-decode", "aGVsbG8="): "hello",
+            ("hex-encode", "Hi"): "4869",
+            ("hex-decode", "4869"): "Hi",
+            ("url-encode", "a b"): "a%20b",
+            ("url-decode", "a%20b"): "a b",
+            ("rot13", "hello"): "uryyb",
+            ("num-factorial", "5"): "120",
+            ("num-fibonacci", "10"): "55",
+            ("num-prime", "17"): "true",
+        }
+        for (package, arg), expected in checks.items():
+            actual = output(package, arg)
+            if actual != expected:
+                raise SystemExit(f"{package}: expected {expected!r}, got {actual!r}")
         # Exercise the user-facing behavior of first-party packages, not just
         # compilation and --help output.
         sc = out / "small-creatures"

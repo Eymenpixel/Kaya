@@ -18,8 +18,16 @@ def main() -> None:
         if not entry or not (folder / entry).is_file():
             raise SystemExit(f"{folder.name}: manifest entry is missing")
         archive = folder / f"{folder.name}.kay"
+        support = data.get("supportFiles", [])
+        if not isinstance(support, list) or any(not isinstance(x, str) for x in support):
+            raise SystemExit(f"{folder.name}: supportFiles must be a list of paths")
+        names = list(dict.fromkeys(["manifest.json", entry, *support]))
+        for name in names:
+            path = (folder / name).resolve()
+            if folder.resolve() not in path.parents or not path.is_file():
+                raise SystemExit(f"{folder.name}: invalid or missing package file: {name}")
         with tarfile.open(archive, "w", format=tarfile.USTAR_FORMAT) as tar:
-            for name in ("manifest.json", entry):
+            for name in names:
                 path = folder / name
                 info = tar.gettarinfo(str(path), arcname=name)
                 info.uid = info.gid = 0

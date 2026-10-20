@@ -31,6 +31,25 @@ kernel command.
 - `agent-switcher`: selects manager adapters and maps `dpkg` to `apt`.
 - `nexus`: runs programs in its own portable bytecode VM.
 
+## Community catalog
+
+The repository currently ships 197 catalog utilities in addition to the three
+first-party applications (200 `.kay` packages total). The catalog covers text
+formatting, encodings, number helpers, developer aids, data transforms, and
+generators. Most catalog packages share a small C++ dispatcher header and have
+their own entry point, manifest, and reproducible archive. This is a curated
+starter catalog; the POSIX backend tests compilation, archive contents, and a
+set of representative behaviors. It does not establish compatibility with
+Blackbit's native ABI.
+
+Regenerate the catalog and archives, then run the WSL smoke suite:
+
+```sh
+python3 tools/catalog.py
+python3 tools/build_packages.py
+python3 tools/test_packages.py
+```
+
 The native `.kay` archives and C++ source files are kept together in each
 package folder. The POSIX C++ runtime plugin is a development backend; native
 Blackbit runtime support still requires its kernel adapter.

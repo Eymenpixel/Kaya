@@ -60,9 +60,10 @@ language and runtime versions, entry points, and dependencies. Kaya records the
 selected build in the private setup profile; native Blackbit runtime discovery
 and compatible-build prompting remain part of the kernel adapter work.
 
-The planned first-party packages are `small-creatures` (terminal themes),
+The first-party packages are `small-creatures` (terminal themes),
 `agent-switcher` (platform-supported package manager adapters), and `nexus`
-(virtual machines). Their current specifications are in
+(a portable bytecode VM). The repository includes 200 `.kay` packages in total,
+including 197 catalog utilities. Their current specifications are in
 [`Packages/README.md`](Packages/README.md); executable Blackbit packages need
 the native ABI/runtime adapter first.
 

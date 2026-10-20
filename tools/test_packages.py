@@ -27,7 +27,7 @@ def main() -> None:
             entry = manifest["entry"]
             binary = out / manifest["name"]
             run(["c++", "-std=c++17", "-Wall", "-Wextra", "-Wpedantic", "-Werror",
-                 "-O2", str(folder / entry), "-o", str(binary)])
+                 "-O0", str(folder / entry), "-o", str(binary)])
             run([str(binary), "--help"])
             archive = folder / f"{manifest['name']}.kay"
             if not archive.is_file():
@@ -45,7 +45,7 @@ def main() -> None:
         for name in packages:
             if name in {"small-creatures", "agent-switcher", "nexus"}:
                 continue
-            result = subprocess.run([str(out / name)], input=b"5 7",
+            result = subprocess.run([str(out / name)], input=b"5 7 11 * *",
                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             if result.returncode != 0 or b"Unknown tool" in result.stderr:
                 raise SystemExit(f"{name}: catalog command failed to launch: {result.stderr!r}")
@@ -69,6 +69,11 @@ def main() -> None:
             ("num-gcd", ("12", "18")): "6",
             ("num-convert-hex", ("255",)): "ff",
             ("num-reverse", ("1203",)): "3021",
+            ("num-prime-factors", ("12",)): "2 2 3",
+            ("num-divisors", ("12",)): "1 2 3 4 6 12",
+            ("num-range", ("1", "5", "2")): "1, 3, 5",
+            ("num-mode", ("2", "3", "3", "4")): "3",
+            ("num-modpow", ("2", "10", "1000")): "24",
             ("morse-encode", ("SOS",)): "... --- ...",
             ("html-escape", ("<a>",)): "&lt;a&gt;",
             ("json-escape", ("a\nb",)): '"a\\nb"',
@@ -78,6 +83,20 @@ def main() -> None:
             ("gen-box", ("Hi",)): "+----+\n| Hi |\n+----+",
             ("dev-path-extension", ("folder/file.txt",)): "txt",
             ("data-list-dedupe", ("a\na\nb",)): "a\nb",
+            ("data-json-keys", ('{"name":"Kaya","enabled":true}',)): "name\nenabled",
+            ("data-csv-stats", ("a,b\n1,2",)): "rows=2\ncolumns=2",
+            ("data-file-size", ("hello",)): "5 bytes",
+            ("data-list-rotate", ("a\nb\nc",)): "b\nc\na",
+            ("dev-semver", ("2.4.1",)): "valid 2.4.1",
+            ("dev-semver-bump", ("2.4.1", "minor")): "2.5.0",
+            ("dev-shell-quote", ("hello world",)): "'hello world'",
+            ("dev-sha256", ("abc",)): "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+            ("dev-crc32", ("123456789",)): "cbf43926",
+            ("dev-regex-unescape", (r"a\+b",)): "a+b",
+            ("dev-xml-escape", ("<x>",)): "&lt;x&gt;",
+            ("dev-ini-format", ("a=1\nb =2",)): "a = 1\nb = 2",
+            ("data-log-levels", ("INFO started\nERROR failed\nWARN slow",)): "ERROR=1 WARN=1 INFO=1",
+            ("data-accesslog-summary", ('GET / " 200 1\nGET /x " 404 0',)): "200 1\n404 1",
         }
         for (package, args), expected in checks.items():
             actual = output(package, *args)

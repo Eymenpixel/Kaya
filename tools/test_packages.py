@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+"""Compile every C++ package and run its smoke command."""
+from pathlib import Path
+import json
+import subprocess
+import tempfile
+import tarfile
+import os
+
+ROOT = Path(__file__).resolve().parents[1]
+PACKAGES = ROOT / "Packages"
+
+def run(command: list[str], env=None) -> None:
+    subprocess.run(command, check=True, cwd=ROOT, env=env)
+
+def main() -> None:
+    packages = []
+    with tempfile.TemporaryDirectory(prefix="kaya-package-check-") as temp:
+        out = Path(temp)
+        for folder in sorted(PACKAGES.iterdir()):
+            manifest_path = folder / "manifest.json"
+            if not folder.is_dir() or not manifest_path.is_file():
+                continue
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            if manifest.get("runtime") != "cpp":
+                continue
+            entry = manifest["entry"]
+            binary = out / manifest["name"]
+            run(["c++", "-std=c++17", "-Wall", "-Wextra", "-Wpedantic", "-Werror",
+                 "-O2", str(folder / entry), "-o", str(binary)])
+            run([str(binary), "--help"])
+            archive = folder / f"{manifest['name']}.kay"
+            if not archive.is_file():
+                raise SystemExit(f"{manifest['name']}: .kay archive missing")
+            with tarfile.open(archive) as tar:
+                names = set(tar.getnames())
+                if "manifest.json" not in names or entry not in names:
+                    raise SystemExit(f"{manifest['name']}: incomplete .kay archive")
+                archived_manifest = json.load(tar.extractfile("manifest.json"))
+                if archived_manifest["name"] != manifest["name"]:
+                    raise SystemExit(f"{manifest['name']}: archive manifest mismatch")
+            packages.append(manifest["name"])
+        # Exercise the user-facing behavior of first-party packages, not just
+        # compilation and --help output.
+        sc = out / "small-creatures"
+        sc_data = out / "sc-data"
+        env = {**os.environ, "KAYA_DATA_DIR": str(sc_data)}
+        run([str(sc), "--customize", "00FF00", "E"], env=env)
+        run([str(sc), "--save", "1"], env=env)
+        run([str(sc), "--customize", "E", "FF0000"], env=env)
+        run([str(sc), "--load", "1"], env=env)
+        if (sc_data / "current.theme").read_text().strip() != "00FF00 FFFFFF":
+            raise SystemExit("small-creatures: save/load did not restore the theme")
+
+        switcher = out / "agent-switcher"
+        switcher_data = out / "switcher-data"
+        run([str(switcher), "--use", "forge"], env={**os.environ, "KAYA_DATA_DIR": str(switcher_data)})
+        fakebin = out / "fakebin"
+        fakebin.mkdir()
+        fake_forge = fakebin / "forge"
+        fake_forge.write_text("#!/bin/sh\nprintf '%s\\n' \"$*\" > \"$FORGE_CAPTURE\"\n", encoding="utf-8")
+        fake_forge.chmod(0o755)
+        capture = out / "forge-args"
+        fake_env = {**os.environ, "KAYA_DATA_DIR": str(switcher_data),
+                    "FORGE_CAPTURE": str(capture), "PATH": str(fakebin) + os.pathsep + os.environ["PATH"]}
+        subprocess.run([str(switcher), "--install", "dpkg"], input="y\n", text=True,
+                       env=fake_env, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if capture.read_text().strip() != "install apt":
+            raise SystemExit("agent-switcher: dpkg did not map to forge install apt")
+        if (switcher_data / "selected-backend").read_text().strip() != "apt":
+            raise SystemExit("agent-switcher: installed backend was not selected")
+
+        nexus = out / "nexus"
+        nexus_data = out / "nexus-data"
+        nexus_env = {**os.environ, "KAYA_DATA_DIR": str(nexus_data)}
+        run([str(nexus), "--init", "smoke"], env=nexus_env)
+        result = subprocess.run([str(nexus), "--run", "smoke"], env=nexus_env,
+                                check=True, text=True, stdout=subprocess.PIPE)
+        if result.stdout.strip() != "42":
+            raise SystemExit("nexus: VM smoke program did not produce 42")
+
+        # End-to-end install and launch through Kaya with its real C++ plugin
+        # and per-package sandbox/data directory.
+        kaya_bin = out / "kaya"
+        run(["cc", "-Wall", "-Wextra", "-O2", "-std=c11", "-o", str(kaya_bin),
+             str(ROOT / "Kaya/src/kaya.c"), str(ROOT / "Kaya/src/sandbox.c"),
+             str(ROOT / "Kaya/src/json.c"), str(ROOT / "Kaya/src/tar.c"),
+             str(ROOT / "Kaya/src/manifest.c"), str(ROOT / "Kaya/src/setup.c")])
+        kaya_root = out / "kaya-root"
+        run([str(kaya_bin), "--root", str(kaya_root), "--install", "-fileplugin",
+             str(ROOT / "Plugins/cpp/cpp.kyp")])
+        for folder in sorted(PACKAGES.iterdir()):
+            manifest_path = folder / "manifest.json"
+            if manifest_path.is_file():
+                archive = folder / f"{folder.name}.kay"
+                run([str(kaya_bin), "--root", str(kaya_root), "--install", "-file", str(archive)])
+        run([str(kaya_bin), "--root", str(kaya_root), "run", "small-creatures", "--", "--customize", "123456", "E"])
+        if (kaya_root / "data/small-creatures/current.theme").read_text().strip() != "123456 FFFFFF":
+            raise SystemExit("Kaya sandbox did not retain small-creatures data")
+        run([str(kaya_bin), "--root", str(kaya_root), "run", "agent-switcher", "--", "--list"])
+        run([str(kaya_bin), "--root", str(kaya_root), "run", "nexus", "--", "--init", "e2e"])
+        vm_result = subprocess.run([str(kaya_bin), "--root", str(kaya_root), "run", "nexus", "--", "--run", "e2e"],
+                                   check=True, text=True, stdout=subprocess.PIPE)
+        if vm_result.stdout.strip() != "42":
+            raise SystemExit("Nexus did not run through Kaya's sandbox")
+        print(f"Compiled and smoke-checked {len(packages)} C++ packages")
+        print("Packages: " + ", ".join(packages))
+
+if __name__ == "__main__":
+    main()

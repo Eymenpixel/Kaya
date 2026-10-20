@@ -1,8 +1,9 @@
 # Kaya package catalog
 
 This directory contains distributable Kaya applications. A `.kay` file is a
-tar archive containing `manifest.json` and the package's compiled C or C++
-program. A package belongs here only when it adds an application-level job that Blackbit's built-in
+tar archive containing `manifest.json` and the package program. C++ source
+packages use the `cpp` runtime plugin to compile their entry point at launch.
+A package belongs here only when it adds an application-level job that Blackbit's built-in
 commands do not already perform. Do not ship wrappers that simply rename
 `peek`, `scribe`, `treeview`, `machine`, `tasks`, `netview`, `forge`, or another
 kernel command.
@@ -16,21 +17,20 @@ kernel command.
   bundling POSIX utilities or assuming a Linux host.
 - Declare only the capabilities the application needs. Destructive or
   privileged operations must ask the user at the moment they are performed.
-- Include source, a reproducible build recipe, a v2 manifest, and a `.kay`
+- Include source, a reproducible build recipe, a manifest, and a `.kay`
   archive together in each package directory.
-- Put the compiled program at the manifest's `entry` path inside the archive.
-  The `builds` array records the language (`c` or `cpp`), compiler/runtime
-  version, and entry path. Keep the C/C++ source outside the archive beside
-  the distributable so it can be rebuilt.
+- Put the declared program entry inside the archive. C++ manifests declare
+  `runtime: cpp`, `language: cpp`, and the required `cpp` plugin. Keep source
+  and build instructions beside the distributable.
 - Mark an application Blackbit-native only after its entry format and API calls
   have been checked against the Blackbit ABI.
 
-## Planned first-party applications
+## First-party applications
 
-- `small-creatures`: terminal theme editor with color presets and save slots.
-- `agent-switcher`: discover and select package-manager adapters supported by
-  the running platform.
-- `nexus`: virtual-machine front end backed by Blackbit's virtualization API.
+- `small-creatures`: terminal theme editor with HEX colors and save slots.
+- `agent-switcher`: selects manager adapters and maps `dpkg` to `apt`.
+- `nexus`: runs programs in its own portable bytecode VM.
 
-These are package specifications, not executable packages yet. The POSIX Kaya
-development backend cannot provide the Blackbit ABI or virtualization service.
+The native `.kay` archives and C++ source files are kept together in each
+package folder. The POSIX C++ runtime plugin is a development backend; native
+Blackbit runtime support still requires its kernel adapter.

@@ -50,8 +50,19 @@ static int run_vm(const fs::path &path) {
             int64_t v; if (!reg(a[2],v)) return 2; r[a[1][1]-'0'] = v;
         } else if ((op == "ADD" || op == "SUB" || op == "MUL" || op == "DIV") && a.size() == 3 && a[1].size() == 2 && a[1][0] == 'r' && a[1][1] >= '0' && a[1][1] <= '7') {
             int64_t v; if (!reg(a[2],v)) return 2; auto &dst = r[a[1][1]-'0'];
-            if (op == "ADD") dst += v; else if (op == "SUB") dst -= v;
-            else if (op == "MUL") dst *= v; else { if (!v) { std::cerr << "VM division by zero.\n"; return 2; } dst /= v; }
+            int64_t result = 0;
+            if (op == "ADD") {
+                if (__builtin_add_overflow(dst, v, &result)) { std::cerr << "VM integer overflow.\n"; return 2; }
+            } else if (op == "SUB") {
+                if (__builtin_sub_overflow(dst, v, &result)) { std::cerr << "VM integer overflow.\n"; return 2; }
+            } else if (op == "MUL") {
+                if (__builtin_mul_overflow(dst, v, &result)) { std::cerr << "VM integer overflow.\n"; return 2; }
+            } else {
+                if (!v) { std::cerr << "VM division by zero.\n"; return 2; }
+                if (dst == INT64_MIN && v == -1) { std::cerr << "VM integer overflow.\n"; return 2; }
+                result = dst / v;
+            }
+            dst = result;
         } else if (op == "PRINT" && a.size() == 2) {
             int64_t v; if (!reg(a[1],v)) return 2; std::cout << v << '\n';
         } else if (op == "JMP" && a.size() == 2) {

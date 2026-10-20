@@ -48,20 +48,32 @@ def main() -> None:
                                     text=True, check=True, stdout=subprocess.PIPE)
             return result.stdout.strip()
         checks = {
-            ("text-upper", "hello"): "HELLO",
-            ("base64-encode", "hello"): "aGVsbG8=",
-            ("base64-decode", "aGVsbG8="): "hello",
-            ("hex-encode", "Hi"): "4869",
-            ("hex-decode", "4869"): "Hi",
-            ("url-encode", "a b"): "a%20b",
-            ("url-decode", "a%20b"): "a b",
-            ("rot13", "hello"): "uryyb",
-            ("num-factorial", "5"): "120",
-            ("num-fibonacci", "10"): "55",
-            ("num-prime", "17"): "true",
+            ("text-upper", ("hello",)): "HELLO",
+            ("base64-encode", ("hello",)): "aGVsbG8=",
+            ("base64-decode", ("aGVsbG8=",)): "hello",
+            ("hex-encode", ("Hi",)): "4869",
+            ("hex-decode", ("4869",)): "Hi",
+            ("url-encode", ("a b",)): "a%20b",
+            ("url-decode", ("a%20b",)): "a b",
+            ("rot13", ("hello",)): "uryyb",
+            ("num-factorial", ("5",)): "120",
+            ("num-fibonacci", ("10",)): "55",
+            ("num-prime", ("17",)): "true",
+            ("num-gcd", ("12", "18")): "6",
+            ("num-convert-hex", ("255",)): "ff",
+            ("num-reverse", ("1203",)): "3021",
+            ("morse-encode", ("SOS",)): "... --- ...",
+            ("html-escape", ("<a>",)): "&lt;a&gt;",
+            ("json-escape", ("a\nb",)): '"a\\nb"',
+            ("unicode-codepoints", ("Aé",)): "U+41 U+E9",
+            ("csv-to-tsv", ("a,b",)): "a\tb",
+            ("gen-rgb", ()): "rgb(79, 134, 247)",
+            ("gen-box", ("Hi",)): "+----+\n| Hi |\n+----+",
+            ("dev-path-extension", ("folder/file.txt",)): "txt",
+            ("data-list-dedupe", ("a\na\nb",)): "a\nb",
         }
-        for (package, arg), expected in checks.items():
-            actual = output(package, arg)
+        for (package, args), expected in checks.items():
+            actual = output(package, *args)
             if actual != expected:
                 raise SystemExit(f"{package}: expected {expected!r}, got {actual!r}")
         # Exercise the user-facing behavior of first-party packages, not just

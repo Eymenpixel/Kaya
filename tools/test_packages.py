@@ -42,6 +42,13 @@ def main() -> None:
                 if archived_manifest["name"] != manifest["name"]:
                     raise SystemExit(f"{manifest['name']}: archive manifest mismatch")
             packages.append(manifest["name"])
+        for name in packages:
+            if name in {"small-creatures", "agent-switcher", "nexus"}:
+                continue
+            result = subprocess.run([str(out / name)], input=b"5 7",
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if result.returncode != 0 or b"Unknown tool" in result.stderr:
+                raise SystemExit(f"{name}: catalog command failed to launch: {result.stderr!r}")
         # Exercise representative catalog behavior beyond --help.
         def output(package: str, *args: str, stdin: str = "") -> str:
             result = subprocess.run([str(out / package), *args], input=stdin,

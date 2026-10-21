@@ -52,6 +52,10 @@ needs. Destructive operations such as `wipe`, `formatdisk`, `erase`, and user or
 network administration require explicit user confirmation and must not be
 silently run during installation.
 
+## Releases
+
+Versioned package releases are published from this repository. Each release asset bundles the `.kay` packages and `.kyp` plugins for that version. Build a validated bundle with `python3 tools/package_release.py dist/kaya-packages.zip`, then attach it to the matching GitHub Release.
+
 ## Packages and plugins
 
 Packages are versioned applications. Plugins provide language/runtime adapters

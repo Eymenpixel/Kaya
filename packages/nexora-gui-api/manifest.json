@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "nexora-gui-api",
+  "version": "0.1.0",
+  "description": "Nexora graphical application API capability",
+  "runtime": "meta",
+  "entry": null,
+  "depends": ["kaya-core>=0.1.0", "python-runtime>=0.1.0"],
+  "conflicts": [],
+  "system_dependencies": ["Nexora windowing and graphics API"],
+  "commands": []
+}

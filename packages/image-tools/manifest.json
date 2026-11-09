@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "image-tools",
+  "version": "0.1.0",
+  "description": "Disk and optical image inspection capability",
+  "runtime": "meta",
+  "entry": null,
+  "depends": ["qemu-runtime>=0.1.0"],
+  "conflicts": [],
+  "system_dependencies": ["ISO/IMG inspection utilities", "supported virtual disk image adapters"],
+  "commands": []
+}

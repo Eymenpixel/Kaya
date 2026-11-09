@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/Eymenpixel/Kaya/tree/main/packages",
+  "packages": [
+    {
+      "name": "cpp-runtime",
+      "version": "0.1.0",
+      "runtime": "meta",
+      "path": "cpp-runtime/cpp-runtime.kay",
+      "sha256": "031af24f150c13f37f1874d39245a6e2a7ab4909c27cce6e51c066156adef98f",
+      "depends": [],
+      "system_dependencies": [
+        "C++17 compiler/runtime",
+        "libstdc++ ABI"
+      ],
+      "commands": []
+    },
+    {
+      "name": "ext4-tools",
+      "version": "0.1.0",
+      "runtime": "meta",
+      "path": "ext4-tools/ext4-tools.kay",
+      "sha256": "7245537386a7c9078aee5ca317e9bd6becd33f3eed19960b9744e95ce87ef682",
+      "depends": [
+        "image-tools>=0.1.0"
+      ],
+      "system_dependencies": [
+        "ext4 filesystem inspection tools or Nexora storage API"
+      ],
+      "commands": []
+    },
+    {
+      "name": "image-tools",
+      "version": "0.1.0",
+      "runtime": "meta",
+      "path": "image-tools/image-tools.kay",
+      "sha256": "078fa9da20f773f6481ef9fa2a3f013e39994b420322948a9d8c03ed0fcd3201",
+      "depends": [
+        "qemu-runtime>=0.1.0"
+      ],
+      "system_dependencies": [
+        "ISO/IMG inspection utilities",
+        "supported virtual disk image adapters"
+      ],
+      "commands": []
+    },
+    {
+      "name": "kaya-core",
+      "version": "0.1.0",
+      "runtime": "meta",
+      "path": "kaya-core/kaya-core.kay",
+      "sha256": "b1c7b76baa4386044cf6737c15ee587de8648f405c2eb2ebf74edaea624af315",
+      "depends": [
+        "cpp-runtime>=0.1.0",
+        "python-runtime>=0.1.0",
+        "ust>=0.3.0"
+      ],
+      "system_dependencies": [
+        "Nexora package database and PATH integration"
+      ],
+      "commands": []
+    },
+    {
+      "name": "kaya-gui",
+      "version": "0.1.0",
+      "runtime": "python",
+      "path": "kaya-gui/kaya-gui.kay",
+      "sha256": "21b3cdb3db26666cb8e9b930da1a3ebf8c43fde7054a438b43706fc5a33e2bc7",
+      "depends": [
+        "kaya-core>=0.1.0",
+        "python-runtime>=0.1.0",
+        "tk-runtime>=0.1.0",
+        "nexora-gui-api>=0.1.0"
+      ],
+      "system_dependencies": [
+        "Nexora GUI API",
+        "Tkinter/Tk or a Nexora-compatible Python GUI bridge"
+      ],
+      "commands": [
+        "kaya-gui"
+      ]
+    },
+    {
+      "name": "nexora-gui-api",
+      "version": "0.1.0",
+      "runtime": "meta",
+      "path": "nexora-gui-api/nexora-gui-api.kay",
+      "sha256": "9e94f323615eb78052da8e81884bd98909a57d2aef018544ec4cca28eefbc229",
+      "depends": [
+        "kaya-core>=0.1.0",
+        "python-runtime>=0.1.0"
+      ],
+      "system_dependencies": [
+        "Nexora windowing and graphics API"
+      ],
+      "commands": []
+    },
+    {
+      "name": "nexora-terminal-api",
+      "version": "0.1.0",
+      "runtime": "meta",
+      "path": "nexora-terminal-api/nexora-terminal-api.kay",
+      "sha256": "caa8601ec9e68dfb137e998196ed60c58fd64e4bb757a353e813f0e8f0568005",
+      "depends": [
+        "kaya-core>=0.1.0"
+      ],
+      "system_dependencies": [
+        "Nexora terminal theme/profile API"
+      ],
+      "commands": []
+    },
+    {
+      "name": "nexus",
+      "version": "0.1.0",
+      "runtime": "python",
+      "path": "nexus/nexus.kay",
+      "sha256": "80259e1e0455ed4f649c8015bce3116c1807051a40b4791ab3c1465dfdacb035",
+      "depends": [
+        "kaya-core>=0.1.0",
+        "python-runtime>=0.1.0",
+        "nexora-gui-api>=0.1.0",
+        "vm-stack>=0.1.0"
+      ],
+      "system_dependencies": [
+        "qemu-system",
+        "qemu-img",
+        "VirtualBox/VBoxManage",
+        "Nexora GUI API"
+      ],
+      "commands": [
+        "nexus"
+      ]
+    },
+    {
+      "name": "python-runtime",
+      "version": "0.1.0",
+      "runtime": "meta",
+      "path": "python-runtime/python-runtime.kay",
+      "sha256": "85e3e31b82a403f797ce5234209175ccd5fdf804e7949a61ae3e7b9b95ff3896",
+      "depends": [],
+      "system_dependencies": [
+        "Python 3.10 or newer"
+      ],
+      "commands": []
+    },
+    {
+      "name": "qemu-runtime",
+      "version": "0.1.0",
+      "runtime": "meta",
+      "path": "qemu-runtime/qemu-runtime.kay",
+      "sha256": "3afc28492ea1f0e1edb4ac8d9c3fd8d5e1d7ca5868eb48de7ccd85462e638810",
+      "depends": [
+        "kaya-core>=0.1.0",
+        "nexora-gui-api>=0.1.0"
+      ],
+      "system_dependencies": [
+        "qemu-system",
+        "qemu-img"
+      ],
+      "commands": []
+    },
+    {
+      "name": "small-creatures",
+      "version": "0.1.0",
+      "runtime": "python",
+      "path": "small-creatures/small-creatures.kay",
+      "sha256": "2ac1771841e76cccd0b36ec264ae29f658f6f2c9ffd092a772ab8316ab1ad691",
+      "depends": [
+        "kaya-core>=0.1.0",
+        "python-runtime>=0.1.0",
+        "nexora-terminal-api>=0.1.0",
+        "tk-runtime>=0.1.0"
+      ],
+      "system_dependencies": [
+        "Nexora terminal profile/theme API"
+      ],
+      "commands": [
+        "small-creatures"
+      ]
+    },
+    {
+      "name": "tk-runtime",
+      "version": "0.1.0",
+      "runtime": "meta",
+      "path": "tk-runtime/tk-runtime.kay",
+      "sha256": "3a144dbecec1f811986f8a3c0c251a0472290a1fc61a544f356e1c6335341a5c",
+      "depends": [
+        "python-runtime>=0.1.0",
+        "nexora-gui-api>=0.1.0"
+      ],
+      "system_dependencies": [
+        "Tkinter/Tk or a Nexora-compatible Python GUI bridge"
+      ],
+      "commands": []
+    },
+    {
+      "name": "ust",
+      "version": "0.3.0",
+      "runtime": "meta",
+      "path": "ust/ust.kay",
+      "sha256": "55f9b0310e6fd34d72f1b0498e92f7e608cd296b7056912e183436dabfb81ef9",
+      "depends": [
+        "cpp-runtime>=0.1.0"
+      ],
+      "system_dependencies": [
+        "libcurl with TLS support"
+      ],
+      "commands": []
+    },
+    {
+      "name": "virtualbox-runtime",
+      "version": "0.1.0",
+      "runtime": "meta",
+      "path": "virtualbox-runtime/virtualbox-runtime.kay",
+      "sha256": "53b5def3887bbfbbbed4d4e87b16514db49ca0444f810197af48002c9862d83f",
+      "depends": [
+        "kaya-core>=0.1.0",
+        "nexora-gui-api>=0.1.0"
+      ],
+      "system_dependencies": [
+        "VirtualBox host runtime",
+        "VBoxManage"
+      ],
+      "commands": []
+    },
+    {
+      "name": "vm-stack",
+      "version": "0.1.0",
+      "runtime": "meta",
+      "path": "vm-stack/vm-stack.kay",
+      "sha256": "a8f2a59778e39b5679ab3eb0fe354ccd05674842b926b871fbf35b140745cc03",
+      "depends": [
+        "qemu-runtime>=0.1.0",
+        "virtualbox-runtime>=0.1.0",
+        "image-tools>=0.1.0",
+        "ext4-tools>=0.1.0"
+      ],
+      "system_dependencies": [],
+      "commands": []
+    }
+  ]
+}

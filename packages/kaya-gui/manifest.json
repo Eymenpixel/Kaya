@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "kaya-gui",
+  "version": "0.1.0",
+  "description": "Graphical companion for the Kaya package manager",
+  "runtime": "python",
+  "entry": "src/main.py",
+  "depends": ["kaya-core>=0.1.0", "python-runtime>=0.1.0", "tk-runtime>=0.1.0", "nexora-gui-api>=0.1.0"],
+  "conflicts": [],
+  "system_dependencies": ["Nexora GUI API", "Tkinter/Tk or a Nexora-compatible Python GUI bridge"],
+  "commands": ["kaya-gui"]
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "virtualbox-runtime",
+  "version": "0.1.0",
+  "description": "VirtualBox backend capability",
+  "runtime": "meta",
+  "entry": null,
+  "depends": ["kaya-core>=0.1.0", "nexora-gui-api>=0.1.0"],
+  "conflicts": [],
+  "system_dependencies": ["VirtualBox host runtime", "VBoxManage"],
+  "commands": []
+}

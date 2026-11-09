@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "python-runtime",
+  "version": "0.1.0",
+  "description": "Nexora Python runtime capability declaration",
+  "runtime": "meta",
+  "entry": null,
+  "depends": [],
+  "conflicts": [],
+  "system_dependencies": ["Python 3.10 or newer"],
+  "commands": []
+}

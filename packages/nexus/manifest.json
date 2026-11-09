@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "nexus",
+  "version": "0.1.0",
+  "description": "CLI and GUI starter for Nexora virtual-machine management",
+  "runtime": "python",
+  "entry": "src/main.py",
+  "depends": ["kaya-core>=0.1.0", "python-runtime>=0.1.0", "nexora-gui-api>=0.1.0", "vm-stack>=0.1.0"],
+  "conflicts": [],
+  "system_dependencies": ["qemu-system", "qemu-img", "VirtualBox/VBoxManage", "Nexora GUI API"],
+  "commands": ["nexus"]
+}

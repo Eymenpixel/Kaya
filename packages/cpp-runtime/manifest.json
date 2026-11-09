@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "cpp-runtime",
+  "version": "0.1.0",
+  "description": "Nexora C++ runtime capability declaration",
+  "runtime": "meta",
+  "entry": null,
+  "depends": [],
+  "conflicts": [],
+  "system_dependencies": ["C++17 compiler/runtime", "libstdc++ ABI"],
+  "commands": []
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Eymenpixel/Kaya/blob/main/packages/schema-v1.json",
+  "title": "Kaya .kay manifest v1",
+  "type": "object",
+  "required": ["schema_version", "name", "version", "description", "runtime", "depends", "conflicts"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "name": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+    "version": {"type": "string", "pattern": "^[0-9]+(\\.[0-9]+)*(?:[-+][A-Za-z0-9.]+)?$"},
+    "description": {"type": "string", "maxLength": 1000},
+    "runtime": {"enum": ["cpp", "python", "wasm", "meta"]},
+    "entry": {"type": ["string", "null"]},
+    "depends": {"type": "array", "items": {"type": "string"}},
+    "conflicts": {"type": "array", "items": {"type": "string"}},
+    "system_dependencies": {"type": "array", "items": {"type": "string"}},
+    "commands": {"type": "array", "items": {"type": "string"}}
+  },
+  "allOf": [
+    {"if": {"properties": {"runtime": {"const": "meta"}}}, "then": {"properties": {"entry": {"type": "null"}}}},
+    {"if": {"properties": {"runtime": {"enum": ["cpp", "python", "wasm"]}}}, "then": {"required": ["entry"], "properties": {"entry": {"type": "string", "minLength": 1}}}}
+  ],
+  "additionalProperties": true
+}

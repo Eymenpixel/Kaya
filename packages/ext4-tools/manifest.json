@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "ext4-tools",
+  "version": "0.1.0",
+  "description": "ext4 image inspection capability for Nexus",
+  "runtime": "meta",
+  "entry": null,
+  "depends": ["image-tools>=0.1.0"],
+  "conflicts": [],
+  "system_dependencies": ["ext4 filesystem inspection tools or Nexora storage API"],
+  "commands": []
+}

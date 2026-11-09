@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "ust",
+  "version": "0.3.0",
+  "description": "Universal Source Tool used by Kaya for secure package downloads",
+  "runtime": "meta",
+  "entry": null,
+  "depends": ["cpp-runtime>=0.1.0"],
+  "conflicts": [],
+  "system_dependencies": ["libcurl with TLS support"],
+  "commands": []
+}

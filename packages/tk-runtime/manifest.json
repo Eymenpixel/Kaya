@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "tk-runtime",
+  "version": "0.1.0",
+  "description": "Tk GUI runtime capability for early Python package prototypes",
+  "runtime": "meta",
+  "entry": null,
+  "depends": ["python-runtime>=0.1.0", "nexora-gui-api>=0.1.0"],
+  "conflicts": [],
+  "system_dependencies": ["Tkinter/Tk or a Nexora-compatible Python GUI bridge"],
+  "commands": []
+}

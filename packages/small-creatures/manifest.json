@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "small-creatures",
+  "version": "0.1.0",
+  "description": "CLI and GUI prototype for Nexora terminal personalization",
+  "runtime": "python",
+  "entry": "src/main.py",
+  "depends": ["kaya-core>=0.1.0", "python-runtime>=0.1.0", "nexora-terminal-api>=0.1.0", "tk-runtime>=0.1.0"],
+  "conflicts": [],
+  "system_dependencies": ["Nexora terminal profile/theme API"],
+  "commands": ["small-creatures"]
+}

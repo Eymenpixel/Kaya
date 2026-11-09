@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "vm-stack",
+  "version": "0.1.0",
+  "description": "Nexus virtualization and image backend set",
+  "runtime": "meta",
+  "entry": null,
+  "depends": ["qemu-runtime>=0.1.0", "virtualbox-runtime>=0.1.0", "image-tools>=0.1.0", "ext4-tools>=0.1.0"],
+  "conflicts": [],
+  "system_dependencies": [],
+  "commands": []
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "kaya-core",
+  "version": "0.1.0",
+  "description": "Nexora package manager core capability declaration",
+  "runtime": "meta",
+  "entry": null,
+  "depends": ["cpp-runtime>=0.1.0", "python-runtime>=0.1.0", "ust>=0.3.0"],
+  "conflicts": [],
+  "system_dependencies": ["Nexora package database and PATH integration"],
+  "commands": []
+}
